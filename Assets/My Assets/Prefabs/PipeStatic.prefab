@@ -121,7 +121,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.046
-  m_Center: {x: 0, y: 0, z: 0.044}
+  m_Center: {x: 0, y: 0, z: 0.03}
 --- !u!136 &136026838613352936
 CapsuleCollider:
   m_ObjectHideFlags: 1
