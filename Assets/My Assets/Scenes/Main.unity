@@ -806,7 +806,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4276772885362392, guid: 1de4a4ddb76c63c40b2dc61e22db732e, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.485
+      value: -2.3964
       objectReference: {fileID: 0}
     - target: {fileID: 4276772885362392, guid: 1de4a4ddb76c63c40b2dc61e22db732e, type: 2}
       propertyPath: m_LocalPosition.y
@@ -836,13 +836,9 @@ Prefab:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 4276772885362392, guid: 1de4a4ddb76c63c40b2dc61e22db732e, type: 2}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -180
-      objectReference: {fileID: 0}
     - target: {fileID: 1531747967173942, guid: 1de4a4ddb76c63c40b2dc61e22db732e, type: 2}
       propertyPath: m_Name
-      value: Entire
+      value: Entry
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1de4a4ddb76c63c40b2dc61e22db732e, type: 2}
@@ -1828,6 +1824,10 @@ Prefab:
       propertyPath: RetainerShellGrip
       value: 
       objectReference: {fileID: 860549054}
+    - target: {fileID: 1377722497790656, guid: c2072a0af8762a14fa9ece126d785833, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114182019453614118, guid: c2072a0af8762a14fa9ece126d785833, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: c2072a0af8762a14fa9ece126d785833, type: 2}
