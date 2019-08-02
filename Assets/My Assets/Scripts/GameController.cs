@@ -15,6 +15,10 @@ public class GameController : MonoBehaviour
     public float TargetRetainerHeight = 5.5f;
     public float RetainerMovingSpeed = 5;
     public event Action<RetainerLiftStage> LiftLeversSwitched;
+    public SVLever SpiderLever;
+    public Animator Spider0Animator;
+    public Animator Spider1Animator;
+
 
     private RetainerLiftStage _movingDirection = RetainerLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
@@ -75,6 +79,11 @@ public class GameController : MonoBehaviour
         LiftRetainer();
         if (_currentPipe != null)
             Debug.Log(_currentPipe.IsTriggered);
+        if (SpiderLever.leverWasSwitched)
+        {
+            Spider0Animator.SetTrigger(SpiderLever.leverIsOn ? "Up" : "Down");
+            Spider1Animator.SetTrigger(SpiderLever.leverIsOn ? "Up" : "Down");
+        }
     }
 
     private void LiftRetainer()

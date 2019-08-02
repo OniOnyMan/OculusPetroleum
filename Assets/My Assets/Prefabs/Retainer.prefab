@@ -19,12 +19,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4142425750086904}
-  - component: {fileID: 136922002891952912}
   - component: {fileID: 54171086439349670}
   - component: {fileID: 138609265075425398}
-  - component: {fileID: 114182019453614118}
+  - component: {fileID: 135968114498502992}
+  - component: {fileID: 114923677106635232}
+  - component: {fileID: 114279856162714820}
   m_Layer: 0
-  m_Name: Capsule
+  m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -201,7 +202,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &1950400750329192
 GameObject:
-  m_ObjectHideFlags: 0
+  m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
@@ -234,8 +235,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1041333871721790}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2318, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.1777, z: -0.0037}
+  m_LocalScale: {x: 0.12986398, y: 0.12986398, z: 0.12986398}
   m_Children: []
   m_Father: {fileID: 4561729178244842}
   m_RootOrder: 0
@@ -296,8 +297,9 @@ Transform:
   - {fileID: 4158421246097882}
   - {fileID: 4040252409422814}
   - {fileID: 4950343391189090}
+  - {fileID: 4561729178244842}
   m_Father: {fileID: 4787373763632776}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4561729178244842
 Transform:
@@ -306,12 +308,12 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1950400750329192}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9708729, y: 0.9708738, z: 0.9708729}
+  m_LocalPosition: {x: 0, y: 0.03219998, z: 0.15499991}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4142425750086904}
-  m_Father: {fileID: 4787373763632776}
-  m_RootOrder: 1
+  m_Father: {fileID: 4556380695584476}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4583161100357960
 Transform:
@@ -350,7 +352,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4481041069500540}
-  - {fileID: 4561729178244842}
   - {fileID: 4556380695584476}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -576,7 +577,7 @@ HingeJoint:
   m_UseLimits: 1
   m_Limits:
     min: -2
-    max: 106
+    max: 90
     bounciness: 0
     bounceMinVelocity: 0.2
     contactDistance: 0
@@ -671,7 +672,7 @@ MonoBehaviour:
   objectDropDistance: 0.3
   isKnockable: 1
   inHand: 0
---- !u!114 &114182019453614118
+--- !u!114 &114279856162714820
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -679,14 +680,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1041333871721790}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02d61468f8b77ae4b92c344bc9a600fb, type: 3}
+  m_Script: {fileID: 11500000, guid: f2daadec7d02b024b868b500c71a0eee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_allowOffhandGrab: 0
-  m_snapPosition: 0
-  m_snapOrientation: 0
-  m_snapOffset: {fileID: 0}
-  m_grabPoints: []
+  gripButton: 6
+  releaseGripButton: -1
+  gripAutoHolds: 0
+  activeController: 0
 --- !u!114 &114444826039041690
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -713,7 +713,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f70be059db7ab44296a68e33bbb62f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  RetainerShellGrip: {fileID: 114182019453614118}
+  RetainerShellGrip: {fileID: 114923677106635232}
+--- !u!114 &114923677106635232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1041333871721790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 352b737e6c5c2b34c8622863e889eb9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canGrab: 1
+  shouldFly: 0
+  grabFlyDistance: 0.35
+  grabFlyTime: 0.1
+  mirrorXOffsetInLeftHand: 1
+  positionOffsetInHand: {x: 0, y: 0, z: 0}
+  forceRotationInHand: 0
+  rotationInHand: {x: 0, y: 0, z: 0}
+  ignorePhysicsInHand: 0
+  locomotionSupported: 0
+  inHandLerpSpeed: 1
+  objectDropDistance: 0.25
+  isKnockable: 1
+  inHand: 0
 --- !u!135 &135208839157990688
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -726,6 +751,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.05
   m_Center: {x: 0, y: 0, z: -0.025}
+--- !u!135 &135968114498502992
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1041333871721790}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136290586508804418
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -738,19 +775,6 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1
   m_Direction: 0
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &136922002891952912
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1041333871721790}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.016
-  m_Height: 0.15
-  m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!138 &138609265075425398
 FixedJoint:
