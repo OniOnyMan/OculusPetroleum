@@ -16,14 +16,13 @@ public class GameController : MonoBehaviour
     public float RetainerMovingSpeed = 5;
     public event Action<RetainerLiftStage> LiftLeversSwitched;
     public SVLever SpiderLever;
-    public Animator Spider0Animator;
-    public Animator Spider1Animator;
-
+    public SpiderEventHandler Spider0;
+    public SpiderEventHandler Spider1;         
 
     private RetainerLiftStage _movingDirection = RetainerLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
     private float _startRetainerHeight;
-    private static GameController _instance;
+    private bool _spiderIsOpened;
 
     public GameObject CurrentPipe
     {
@@ -35,9 +34,14 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance
     {
+        get; private set;
+    }
+
+    private bool IsSpiderOpened
+    {
         get
         {
-            return _instance;
+            return _spiderIsOpened = Spider0.IsOpened && Spider1.IsOpened;
         }
     }
 
@@ -70,7 +74,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         _startRetainerHeight = Retainer.position.y;
-        _instance = this;
+        Instance = this;
         LiftLeversSwitched += delegate (RetainerLiftStage cond) { _movingDirection = cond; };
     }
 
@@ -81,8 +85,8 @@ public class GameController : MonoBehaviour
             Debug.Log(_currentPipe.IsTriggered);
         if (SpiderLever.leverWasSwitched)
         {
-            Spider0Animator.SetTrigger(SpiderLever.leverIsOn ? "Up" : "Down");
-            Spider1Animator.SetTrigger(SpiderLever.leverIsOn ? "Up" : "Down");
+            Spider0.Animator.SetTrigger(!SpiderLever.leverIsOn && Spider0.IsOpened ? "Down" : "Up");
+            Spider1.Animator.SetTrigger(!SpiderLever.leverIsOn && Spider1.IsOpened ? "Down" : "Up");
         }
     }
 

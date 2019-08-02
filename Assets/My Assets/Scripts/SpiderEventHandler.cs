@@ -4,10 +4,28 @@ using System.Collections;
 
 public class SpiderEventHandler : MonoBehaviour
 {
-    public event Action OnOpened;
+    public event Action<bool> OnStatusChanged;
 
-    public void AnimationOpenEventHandler() {
-        if (OnOpened != null)
-            OnOpened.Invoke();
+    public bool IsOpened { get; private set; }
+
+    public Animator Animator { get; private set; }
+
+    private void Start()
+    {
+        Animator = GetComponent<Animator>();
+    }
+
+    public void AnimationOpenEventHandler()
+    {
+        IsOpened = true;
+        if (OnStatusChanged != null)
+            OnStatusChanged.Invoke(IsOpened);
+    }
+
+    public void AnimationCloseEventHandler()
+    {
+        IsOpened = false;
+        if (OnStatusChanged != null)
+            OnStatusChanged.Invoke(IsOpened);
     }
 }
