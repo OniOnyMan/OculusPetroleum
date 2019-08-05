@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RingTriggerHandler : MonoBehaviour
+public class GKSHTriggerHandler : MonoBehaviour
 {
-    private static RingTriggerHandler _instance;
+    private static GKSHTriggerHandler _instance;
 
-    public static RingTriggerHandler Instance
+    public static GKSHTriggerHandler Instance
     {
         get
         {
@@ -21,6 +21,6 @@ public class RingTriggerHandler : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == GameController.Instance.CurrentPipe)
-            GameController.Instance.OnRingTriggerEnter(other);
+            GameController.Instance.OnGKSHTriggerEnter(other);
     }
 }

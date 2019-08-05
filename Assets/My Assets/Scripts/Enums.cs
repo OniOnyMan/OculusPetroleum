@@ -1,4 +1,4 @@
-﻿public enum RetainerLiftStage
+﻿public enum ElevatorLiftStage
 {
     Idle, Up, Down
 }

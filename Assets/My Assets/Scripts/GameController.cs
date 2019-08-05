@@ -7,21 +7,22 @@ public class GameController : MonoBehaviour
     public GameObject PipeStaticPrefab;
     public Vector3 PipeShellJointPosition = new Vector3(2.153215f, 1.401268f, 0.3389995f);
     public Vector3 PipeShellJointRotation = new Vector3(0, -90, 0);
-    public Vector3 RetainerShellJointPosition = new Vector3(-2.173f, 1.3848f, 0.339f);
-    public Vector3 RetainerShellJointRotation = new Vector3(0, 90, 0);
+    public Vector3 ElevatorShellJointPosition = new Vector3(-2.173f, 1.3848f, 0.339f);
+    public Vector3 ElevatorShellJointRotation = new Vector3(0, 90, 0);
     public SVLever LiftUpLever;
     public SVLever LiftDownLever;
-    public Transform Retainer;
-    public float TargetRetainerHeight = 5.5f;
-    public float RetainerMovingSpeed = 5;
-    public event Action<RetainerLiftStage> LiftLeversSwitched;
+    public Transform Elevator;
+    public float TargetElevatorHeight = 5.5f;
+    public float ElevatorMovingSpeed = 5;
+    public event Action<ElevatorLiftStage> LiftLeversSwitched;
     public SVLever SpiderLever;
     public SpiderEventHandler Spider0;
     public SpiderEventHandler Spider1;         
 
-    private RetainerLiftStage _movingDirection = RetainerLiftStage.Idle;
+    private ElevatorLiftStage _movingDirection = ElevatorLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
-    private float _startRetainerHeight;
+    private PipeStaticTriggerHandler _previousPipe;
+    private float _startElevatorHeight;
     private bool _spiderIsOpened;
 
     public GameObject CurrentPipe
@@ -29,6 +30,14 @@ public class GameController : MonoBehaviour
         get
         {
             return _currentPipe.gameObject;
+        }
+    }
+
+    public GameObject PreviousPipe
+    {
+        get
+        {
+            return _previousPipe.gameObject;
         }
     }
 
@@ -45,44 +54,44 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void OnRingTriggerEnter(Collider other)
+    public void OnGKSHTriggerEnter(Collider other)
     {
 
     }
 
-    public void OnRetainerTriggerEnter(Collider other)
+    public void OnElevatorrTriggerEnter(Collider other)
     {
         var grabbable = other.GetComponent<OVRGrabbable>();
         if (grabbable.isGrabbed)
             grabbable.grabbedBy.ForceRelease(grabbable);
         Destroy(other.transform.parent.gameObject);
-        RetainerTriggerHandler.Instance.RetainerShellGrip.DropFromHand();
+        ElevatorTriggerHandler.Instance.ElevatorShellGrip.DropFromHand();
 
-        var retainerCatch = RetainerTriggerHandler.Instance.transform;
-        var retainerShell = retainerCatch.parent;
-        var retainerShellRigidbody = retainerShell.GetComponent<Rigidbody>();
+        var elevatorCatch = ElevatorTriggerHandler.Instance.transform;
+        var elevatorShell = elevatorCatch.parent;
+        var elevatorShellRigidbody = elevatorShell.GetComponent<Rigidbody>();
 
-        retainerShellRigidbody.isKinematic = true;
-        retainerShell.position = RetainerShellJointPosition;
-        retainerShell.rotation = Quaternion.Euler(RetainerShellJointRotation);
+        elevatorShellRigidbody.isKinematic = true;
+        elevatorShell.position = ElevatorShellJointPosition;
+        elevatorShell.rotation = Quaternion.Euler(ElevatorShellJointRotation);
         _currentPipe = Instantiate(PipeStaticPrefab, PipeShellJointPosition, Quaternion.Euler(PipeShellJointRotation)).GetComponentInChildren<PipeStaticTriggerHandler>();
-        _currentPipe.transform.parent = retainerCatch;
+        _currentPipe.transform.parent = elevatorCatch;
         //yield return new WaitForSecondsRealtime(0.22f);
-        retainerShellRigidbody.isKinematic = false;
+        elevatorShellRigidbody.isKinematic = false;
     }
 
     void Start()
     {
-        _startRetainerHeight = Retainer.position.y;
+        _startElevatorHeight = Elevator.position.y;
         Instance = this;
-        LiftLeversSwitched += delegate (RetainerLiftStage cond) { _movingDirection = cond; };
+        LiftLeversSwitched += delegate (ElevatorLiftStage cond) { _movingDirection = cond; };
+        _previousPipe = GameObject.FindGameObjectWithTag("PreviousPipe").GetComponent<PipeStaticTriggerHandler>();
+        PreviousPipe.transform.parent = null;
     }
 
     void Update()
     {
-        LiftRetainer();
-        if (_currentPipe != null)
-            Debug.Log(_currentPipe.IsTriggered);
+        LiftElevator();
         if (SpiderLever.leverWasSwitched)
             SetSpiderAnimatorParams();
     }
@@ -95,24 +104,26 @@ public class GameController : MonoBehaviour
         Spider1.Animator.SetBool("Down", !SpiderLever.leverIsOn);
     }
 
-    private void LiftRetainer()
+    private void LiftElevator()
     {
         if (LiftLeversSwitched != null)
         {
-            if (LiftUpLever.leverWasSwitched && _movingDirection != RetainerLiftStage.Down)
-                LiftLeversSwitched.Invoke(LiftUpLever.leverIsOn ? RetainerLiftStage.Up : RetainerLiftStage.Idle);
-            if (LiftDownLever.leverWasSwitched && _movingDirection != RetainerLiftStage.Up)
-                LiftLeversSwitched.Invoke(LiftDownLever.leverIsOn ? RetainerLiftStage.Down : RetainerLiftStage.Idle);
+            if (LiftUpLever.leverWasSwitched && _movingDirection != ElevatorLiftStage.Down)
+                LiftLeversSwitched.Invoke(LiftUpLever.leverIsOn ? ElevatorLiftStage.Up : ElevatorLiftStage.Idle);
+            if (LiftDownLever.leverWasSwitched && _movingDirection != ElevatorLiftStage.Up)
+                LiftLeversSwitched.Invoke(LiftDownLever.leverIsOn ? ElevatorLiftStage.Down : ElevatorLiftStage.Idle);
         }
-        if (_movingDirection == RetainerLiftStage.Up)
+        if (_movingDirection == ElevatorLiftStage.Up)
         {
-            if (Retainer.position.y < TargetRetainerHeight)
-                Retainer.Translate(Vector3.up * Time.deltaTime * RetainerMovingSpeed);
+            if (Elevator.position.y < TargetElevatorHeight)
+                Elevator.Translate(Vector3.up * Time.deltaTime * ElevatorMovingSpeed);
         }
-        else if (_movingDirection == RetainerLiftStage.Down)
+        else if (_movingDirection == ElevatorLiftStage.Down)
         {
-            if (_currentPipe != null && _currentPipe.IsTriggered || Retainer.position.y > _startRetainerHeight)
-                Retainer.Translate(Vector3.down * Time.deltaTime * RetainerMovingSpeed);
+            var heightCondition = Elevator.position.y > _startElevatorHeight;
+            var targetCondition = _currentPipe == null ? heightCondition : _currentPipe.IsTriggered ? false : heightCondition;
+            if (targetCondition)
+                Elevator.Translate(Vector3.down * Time.deltaTime * ElevatorMovingSpeed);
         }
     }
 }

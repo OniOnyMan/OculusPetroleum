@@ -5,13 +5,15 @@ public class PipeStaticTriggerHandler : MonoBehaviour
 {
     public bool IsTriggered { get; private set; }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        IsTriggered = true;
+        if (other.gameObject == GameController.Instance.PreviousPipe)
+            IsTriggered = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        IsTriggered = false;
+        if (other.gameObject == GameController.Instance.PreviousPipe)
+            IsTriggered = false;
     }
 }
