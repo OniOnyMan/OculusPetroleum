@@ -17,6 +17,7 @@ public class SpiderEventHandler : MonoBehaviour
 
     public void AnimationOpenEventHandler()
     {
+        Animator.SetBool("Up", false);
         IsOpened = true;
         if (OnStatusChanged != null)
             OnStatusChanged.Invoke(IsOpened);
@@ -25,6 +26,7 @@ public class SpiderEventHandler : MonoBehaviour
     public void AnimationCloseEventHandler()
     {
         IsOpened = false;
+        Animator.SetBool("Down", false);
         if (OnStatusChanged != null)
             OnStatusChanged.Invoke(IsOpened);
     }

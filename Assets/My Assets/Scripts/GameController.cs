@@ -84,10 +84,15 @@ public class GameController : MonoBehaviour
         if (_currentPipe != null)
             Debug.Log(_currentPipe.IsTriggered);
         if (SpiderLever.leverWasSwitched)
-        {
-            Spider0.Animator.SetTrigger(!SpiderLever.leverIsOn && Spider0.IsOpened ? "Down" : "Up");
-            Spider1.Animator.SetTrigger(!SpiderLever.leverIsOn && Spider1.IsOpened ? "Down" : "Up");
-        }
+            SetSpiderAnimatorParams();
+    }
+
+    private void SetSpiderAnimatorParams()
+    {
+        Spider0.Animator.SetBool("Up", SpiderLever.leverIsOn);
+        Spider1.Animator.SetBool("Up", SpiderLever.leverIsOn);
+        Spider0.Animator.SetBool("Down", !SpiderLever.leverIsOn);
+        Spider1.Animator.SetBool("Down", !SpiderLever.leverIsOn);
     }
 
     private void LiftRetainer()
