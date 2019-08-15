@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     public float TargetElevatorHeight = 5.5f;
     public float ElevatorMovingSpeed = 5;
     public event Action<ElevatorLiftStage> LiftLeversSwitched;
+    public SVLever GKSHGateLever;
+    public SVLever GKSHRingLever;
     public SVLever SpiderLever;
     public SpiderEventHandler Spider0;
     public SpiderEventHandler Spider1;         
@@ -56,7 +58,8 @@ public class GameController : MonoBehaviour
 
     public void OnGKSHTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
+        var obj = other.transform;
+        obj.parent = GKSHTriggerHandler.Instance.transform;
     }
 
     public void OnElevatorrTriggerEnter(Collider other)
