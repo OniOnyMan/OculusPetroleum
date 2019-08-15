@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
 
     public void OnGKSHTriggerEnter(Collider other)
     {
-
+        Debug.Log(other.name);
     }
 
     public void OnElevatorrTriggerEnter(Collider other)
