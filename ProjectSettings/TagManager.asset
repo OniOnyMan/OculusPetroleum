@@ -6,6 +6,7 @@ TagManager:
   tags:
   - PipeGrabbable
   - PreviousPipe
+  - ElevatorRopeConnector
   layers:
   - Default
   - TransparentFX
