@@ -90,11 +90,14 @@ public class GameController : MonoBehaviour
         LiftLeversSwitched += delegate (ElevatorLiftStage cond) { _movingDirection = cond; };
         _previousPipe = GameObject.FindGameObjectWithTag("PreviousPipe").GetComponent<PipeStaticTriggerHandler>();
         PreviousPipe.transform.parent = null;
+        SetGateOpenClose();
     }
 
     void Update()
     {
         LiftElevator();
+        if (GKSHGateLever.leverWasSwitched)
+            SetGateOpenClose();
         if (SpiderLever.leverWasSwitched)
             SetSpiderAnimatorParams();
     }
@@ -105,6 +108,13 @@ public class GameController : MonoBehaviour
         Spider1.Animator.SetBool("Up", SpiderLever.leverIsOn);
         Spider0.Animator.SetBool("Down", !SpiderLever.leverIsOn);
         Spider1.Animator.SetBool("Down", !SpiderLever.leverIsOn);
+    }
+
+    private void SetGateOpenClose()
+    {
+        var hinge = GateInstance.Instance.GetComponent<HingeJoint>();
+        var spring = hinge.spring;
+        spring.targetPosition = GKSHGateLever.leverIsOn ? hinge.limits.min : hinge.limits.max;
     }
 
     private void LiftElevator()

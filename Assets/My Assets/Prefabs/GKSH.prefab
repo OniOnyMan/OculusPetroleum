@@ -562,6 +562,7 @@ GameObject:
   - component: {fileID: 4088830945821440}
   - component: {fileID: 33326791630665198}
   - component: {fileID: 23987255631465252}
+  - component: {fileID: 114194100395109244}
   - component: {fileID: 54313318871204072}
   - component: {fileID: 59939120955828218}
   - component: {fileID: 114658615307652574}
@@ -3735,6 +3736,17 @@ MonoBehaviour:
   releaseGripButton: -1
   gripAutoHolds: 0
   activeController: 0
+--- !u!114 &114194100395109244
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1459127198225912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb8c1a060b44bfe48bbc77d323d94198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114254811721881390
 MonoBehaviour:
   m_ObjectHideFlags: 1
