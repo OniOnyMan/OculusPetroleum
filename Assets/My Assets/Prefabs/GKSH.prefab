@@ -159,7 +159,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4602885520422100}
-  - component: {fileID: 65016926189609538}
   - component: {fileID: 135721601323069730}
   - component: {fileID: 54393554727990318}
   - component: {fileID: 114670785334378246}
@@ -322,7 +321,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4683649808622816}
-  - component: {fileID: 65649234875676290}
   - component: {fileID: 135908003600253950}
   - component: {fileID: 54870018582070472}
   - component: {fileID: 114060890293445248}
@@ -1511,7 +1509,7 @@ Transform:
   m_GameObject: {fileID: 1120439959250308}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.00000011921, y: 0.1405, z: -0.000041127205}
-  m_LocalScale: {x: 0.03503602, y: 0.03503605, z: 0.035036016}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 4320844329076928}
   m_RootOrder: 1
@@ -1577,7 +1575,7 @@ Transform:
   m_GameObject: {fileID: 1281637516072842}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.00000011921, y: 0.1405, z: -0.000041127205}
-  m_LocalScale: {x: 0.03503602, y: 0.03503605, z: 0.035036016}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 4829573752678658}
   m_RootOrder: 1
@@ -3323,7 +3321,7 @@ HingeJoint:
   m_ConnectedAnchor: {x: 0.25761673, y: -0.0354078, z: -0.05321365}
   m_UseSpring: 1
   m_Spring:
-    spring: 25
+    spring: 15
     damper: 5
     targetPosition: 40
   m_UseMotor: 0
@@ -3357,7 +3355,7 @@ HingeJoint:
   m_ConnectedAnchor: {x: -0.14308983, y: -0.0354078, z: -0.052488524}
   m_UseSpring: 1
   m_Spring:
-    spring: 25
+    spring: 15
     damper: 5
     targetPosition: 40
   m_UseMotor: 0
@@ -3389,11 +3387,11 @@ HingeJoint:
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
   m_ConnectedAnchor: {x: -0.009842714, y: -0.0891782, z: -0.12536025}
-  m_UseSpring: 0
+  m_UseSpring: 1
   m_Spring:
-    spring: 45
-    damper: 5
-    targetPosition: 60
+    spring: 13
+    damper: 2
+    targetPosition: 0
   m_UseMotor: 0
   m_Motor:
     targetVelocity: 0
@@ -3412,18 +3410,6 @@ HingeJoint:
   m_EnablePreprocessing: 1
   m_MassScale: 1
   m_ConnectedMassScale: 1
---- !u!65 &65016926189609538
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1120439959250308}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5071295, y: 2.7769268, z: 0.5201026}
-  m_Center: {x: 0.0012857113, y: -1.9377725, z: -0.0052023362}
 --- !u!65 &65038618226317962
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -3532,18 +3518,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65649234875676290
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1281637516072842}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.5071295, y: 2.7769268, z: 0.5201026}
-  m_Center: {x: 0.0012857113, y: -1.9377725, z: -0.0052023362}
 --- !u!65 &65758724147039858
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -3602,8 +3576,8 @@ MonoBehaviour:
   ignorePhysicsInHand: 0
   locomotionSupported: 0
   inHandLerpSpeed: 1
-  objectDropDistance: 0.3
-  isKnockable: 1
+  objectDropDistance: 0.25
+  isKnockable: 0
   inHand: 0
 --- !u!114 &114060890293445248
 MonoBehaviour:
@@ -3648,7 +3622,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1120439959250308}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5ee590a3f3844a44ba94137c0982775, type: 3}
   m_Name: 
@@ -4149,8 +4123,8 @@ MonoBehaviour:
   ignorePhysicsInHand: 0
   locomotionSupported: 0
   inHandLerpSpeed: 1
-  objectDropDistance: 0.3
-  isKnockable: 1
+  objectDropDistance: 0.25
+  isKnockable: 0
   inHand: 0
 --- !u!114 &114525382850555926
 MonoBehaviour:
@@ -4330,7 +4304,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1281637516072842}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a5ee590a3f3844a44ba94137c0982775, type: 3}
   m_Name: 

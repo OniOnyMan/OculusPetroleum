@@ -24,6 +24,7 @@ public class GameController : MonoBehaviour
     private ElevatorLiftStage _movingDirection = ElevatorLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
     private PipeStaticTriggerHandler _previousPipe;
+    private PipeStaticTriggerHandler _gkshPipe;
     private float _startElevatorHeight;
     private bool _spiderIsOpened;
 
@@ -31,6 +32,7 @@ public class GameController : MonoBehaviour
     {
         get
         {
+            if (_currentPipe == null) return null; 
             return _currentPipe.gameObject;
         }
     }
@@ -58,8 +60,7 @@ public class GameController : MonoBehaviour
 
     public void OnGKSHTriggerEnter(Collider other)
     {
-        var obj = other.transform;
-        obj.parent = GKSHTriggerHandler.Instance.transform;
+        _gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
     }
 
     public void OnElevatorrTriggerEnter(Collider other)
@@ -115,6 +116,7 @@ public class GameController : MonoBehaviour
         var hinge = GateInstance.Instance.GetComponent<HingeJoint>();
         var spring = hinge.spring;
         spring.targetPosition = GKSHGateLever.leverIsOn ? hinge.limits.min : hinge.limits.max;
+        hinge.spring = spring;
     }
 
     private void LiftElevator()
