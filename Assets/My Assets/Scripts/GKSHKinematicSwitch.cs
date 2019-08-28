@@ -9,9 +9,16 @@ public class GKSHKinematicSwitch : MonoBehaviour
     private Rigidbody _gksh;
     private SVGrabbable _grabbable;
     public Action<bool> GrabChanged;
+    public bool Allowed = true;
 
+    public static GKSHKinematicSwitch Instance { get; private set; }
     private void React(bool condition) {
         _gksh.isKinematic = !condition;
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     // Use this for initialization
@@ -26,7 +33,7 @@ public class GKSHKinematicSwitch : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GrabChanged != null && _previousInHand != _grabbable.inHand)
+        if (GrabChanged != null && _previousInHand != _grabbable.inHand && Allowed)
         {
             GrabChanged.Invoke(_grabbable.inHand);
             _previousInHand = _grabbable.inHand;

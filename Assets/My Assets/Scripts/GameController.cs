@@ -19,14 +19,18 @@ public class GameController : MonoBehaviour
     public SVLever GKSHRingLever;
     public SVLever SpiderLever;
     public SpiderEventHandler Spider0;
-    public SpiderEventHandler Spider1;         
+    public SpiderEventHandler Spider1;
+    public float RingRotatingTime = 3f;
+    public float RotatingSpeed = 5f;
 
     private ElevatorLiftStage _movingDirection = ElevatorLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
     private PipeStaticTriggerHandler _previousPipe;
     private PipeStaticTriggerHandler _gkshPipe;
+    private Transform _gkshRing;
     private float _startElevatorHeight;
     private bool _spiderIsOpened;
+    private bool _isRingRotating;
 
     public GameObject CurrentPipe
     {
@@ -61,6 +65,20 @@ public class GameController : MonoBehaviour
     public void OnGKSHTriggerEnter(Collider other)
     {
         _gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
+        _gkshPipe.transform.parent = _gkshRing;
+        GKSHKinematicSwitch.Instance.Allowed = false;
+    }
+
+    private void StartRingRotating()
+    {
+        _isRingRotating = true;
+        StartCoroutine(DelayRingRotatingStop());
+    }
+
+    private IEnumerator DelayRingRotatingStop()
+    {
+        yield return new WaitForSecondsRealtime(RingRotatingTime);
+        _isRingRotating = false;
     }
 
     public void OnElevatorrTriggerEnter(Collider other)
@@ -87,11 +105,16 @@ public class GameController : MonoBehaviour
     void Start()
     {
         _startElevatorHeight = Elevator.position.y;
-        Instance = this;
         LiftLeversSwitched += delegate (ElevatorLiftStage cond) { _movingDirection = cond; };
         _previousPipe = GameObject.FindGameObjectWithTag("PreviousPipe").GetComponent<PipeStaticTriggerHandler>();
         PreviousPipe.transform.parent = null;
         SetGateOpenClose();
+        _gkshRing = GKSHTriggerHandler.Instance.transform;
+    }
+
+    private void Awake()
+    {
+        Instance = this;
     }
 
     void Update()
@@ -101,6 +124,11 @@ public class GameController : MonoBehaviour
             SetGateOpenClose();
         if (SpiderLever.leverWasSwitched)
             SetSpiderAnimatorParams();
+        if (GKSHRingLever.leverWasSwitched)
+            StartRingRotating();
+        if (_isRingRotating)
+            _gkshRing.RotateAround(_gkshRing.position, Vector3.up, Time.deltaTime * RotatingSpeed);
+
     }
 
     private void SetSpiderAnimatorParams()

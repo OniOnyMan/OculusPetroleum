@@ -13,7 +13,7 @@ public class GKSHTriggerHandler : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         _instance = this;
     }
