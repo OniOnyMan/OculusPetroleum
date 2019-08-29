@@ -66,7 +66,7 @@ public class GameController : MonoBehaviour
     {
         _gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
         _gkshPipe.transform.parent = _gkshRing;
-        GKSHKinematicSwitch.Instance.Allowed = false;
+        GKSHAllowGrabController.Instance.IsGrabAllowed = false;
     }
 
     private void StartRingRotating()
@@ -127,7 +127,7 @@ public class GameController : MonoBehaviour
         if (GKSHRingLever.leverWasSwitched)
             StartRingRotating();
         if (_isRingRotating)
-            _gkshRing.RotateAround(_gkshRing.position, Vector3.up, Time.deltaTime * RotatingSpeed);
+            _gkshRing.RotateAround(_gkshRing.position, Vector3.up, Time.deltaTime * RotatingSpeed * 100);
 
     }
 
