@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class GameController : MonoBehaviour
 {
@@ -72,7 +73,8 @@ public class GameController : MonoBehaviour
     private void StartRingRotating()
     {
         _isRingRotating = true;
-        StartCoroutine(DelayRingRotatingStop());
+        _gkshRing.DORotate(transform.rotation.eulerAngles + new Vector3(0, 360, 0), 1.5f);
+        //StartCoroutine(DelayRingRotatingStop());
     }
 
     private IEnumerator DelayRingRotatingStop()
@@ -126,8 +128,6 @@ public class GameController : MonoBehaviour
             SetSpiderAnimatorParams();
         if (GKSHRingLever.leverWasSwitched)
             StartRingRotating();
-        if (_isRingRotating)
-            _gkshRing.Rotate(Vector3.up, Time.deltaTime * RotatingSpeed);
 
     }
 
