@@ -127,7 +127,7 @@ public class GameController : MonoBehaviour
         if (GKSHRingLever.leverWasSwitched)
             StartRingRotating();
         if (_isRingRotating)
-            _gkshRing.RotateAround(_gkshRing.position, Vector3.up, Time.deltaTime * RotatingSpeed * 100);
+            _gkshRing.Rotate(Vector3.up, Time.deltaTime * RotatingSpeed);
 
     }
 
