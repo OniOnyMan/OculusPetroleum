@@ -72,11 +72,21 @@ public class GameController : MonoBehaviour
 
     private void StartRingRotating()
     {
-        _isRingRotating = true;
-        print("Rabotaet");
-        _gkshRing.DORotate(new Vector3(0, 360, 0), 1.5f,RotateMode.FastBeyond360).SetEase(Ease.Linear);
+        if (!_isRingRotating)
+        {
+            _isRingRotating = true;
+            print("Rabotaet");
+            _gkshRing.DORotate(new Vector3(0, 360, 0), 1.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).OnStepComplete(StopRingRotating); ;
+        }
+        else _isRingRotating = false;
 
         //StartCoroutine(DelayRingRotatingStop());
+    }
+
+    private void StopRingRotating()
+    {
+        if (!_isRingRotating)
+            _gkshRing.DOPause();
     }
 
     private IEnumerator DelayRingRotatingStop()
