@@ -74,7 +74,8 @@ public class GameController : MonoBehaviour
     {
         _isRingRotating = true;
         print("Rabotaet");
-        _gkshRing.DORotate(transform.rotation.eulerAngles + new Vector3(0, 360, 0), 1.5f);
+        _gkshRing.DORotate(new Vector3(0, 360, 0), 1.5f,RotateMode.FastBeyond360).SetEase(Ease.Linear);
+
         //StartCoroutine(DelayRingRotatingStop());
     }
 
