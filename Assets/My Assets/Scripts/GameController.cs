@@ -21,8 +21,8 @@ public class GameController : MonoBehaviour
     public SVLever SpiderLever;
     public SpiderEventHandler Spider0;
     public SpiderEventHandler Spider1;
-    public float RingRotatingTime = 3f;
-    public float RotatingSpeed = 5f;
+    public float RingRotatingOnceTime = 1.5f;
+    public int RingRotatingCount = 3;
 
     private ElevatorLiftStage _movingDirection = ElevatorLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
@@ -67,6 +67,7 @@ public class GameController : MonoBehaviour
     {
         _gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
         _gkshPipe.transform.parent = _gkshRing;
+        _currentPipe = null;
         GKSHAllowGrabController.Instance.IsGrabAllowed = false;
     }
 
@@ -75,8 +76,8 @@ public class GameController : MonoBehaviour
         if (!_isRingRotating)
         {
             _isRingRotating = true;
-            print("Rabotaet");
-            _gkshRing.DORotate(new Vector3(0, 360, 0), 1.5f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart).OnStepComplete(StopRingRotating); ;
+            _gkshRing.DORotate(new Vector3(0, 360, 0), RingRotatingOnceTime, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(RingRotatingCount, LoopType.Incremental);
+            //Elevator.DOMoveY(, RingRotatingOnceTime);
         }
         else _isRingRotating = false;
 
@@ -87,12 +88,6 @@ public class GameController : MonoBehaviour
     {
         if (!_isRingRotating)
             _gkshRing.DOPause();
-    }
-
-    private IEnumerator DelayRingRotatingStop()
-    {
-        yield return new WaitForSecondsRealtime(RingRotatingTime);
-        _isRingRotating = false;
     }
 
     public void OnElevatorrTriggerEnter(Collider other)

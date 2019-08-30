@@ -8,12 +8,18 @@ public class PipeStaticTriggerHandler : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject == GameController.Instance.PreviousPipe)
+        {
             IsTriggered = true;
+            //GameController.Instance.PreviousPipe.transform.GetChild(0).gameObject.SetActive(false);
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject == GameController.Instance.PreviousPipe)
+        {
             IsTriggered = false;
+           // GameController.Instance.PreviousPipe.transform.GetChild(0).gameObject.SetActive(true);
+        }
     }
 }
