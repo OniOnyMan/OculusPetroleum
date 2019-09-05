@@ -23,6 +23,8 @@ public class GameController : MonoBehaviour
     public SpiderEventHandler Spider1;
     public float RingRotatingOnceTime = 1.5f;
     public int RingRotatingCount = 3;
+    public Vector3 ElevatorRotatingPosition = new Vector3(-2.018f, 5.089307f, 0.3390008f);
+    public Vector3 PipeRotatingPosition = new Vector3(-2.150962f, 0.743f, 0.3368171f);
 
     private ElevatorLiftStage _movingDirection = ElevatorLiftStage.Idle;
     private PipeStaticTriggerHandler _currentPipe;
@@ -65,10 +67,14 @@ public class GameController : MonoBehaviour
 
     public void OnGKSHTriggerEnter(Collider other)
     {
-        _gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
-        _gkshPipe.transform.parent = _gkshRing;
-        _currentPipe = null;
-        GKSHAllowGrabController.Instance.IsGrabAllowed = false;
+        if (_currentPipe.IsTriggered)
+        {
+            //_gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
+            _currentPipe.transform.parent = _gkshRing;
+            //_currentPipe = null;
+            GKSHAllowGrabController.Instance.IsGrabAllowed = false;
+            GKSHAllowGrabController.Instance.GetComponent<Rigidbody>().isKinematic = true;
+        }
     }
 
     private void StartRingRotating()
@@ -76,8 +82,17 @@ public class GameController : MonoBehaviour
         if (!_isRingRotating)
         {
             _isRingRotating = true;
-            _gkshRing.DORotate(new Vector3(0, 360, 0), RingRotatingOnceTime, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(RingRotatingCount, LoopType.Incremental);
-            //Elevator.DOMoveY(, RingRotatingOnceTime);
+            _gkshRing.DORotate(new Vector3(0, 360, 0), RingRotatingOnceTime, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(RingRotatingCount, LoopType.Restart)
+                .OnComplete(() => {
+                    _currentPipe.transform.parent = ElevatorTriggerHandler.Instance.transform;
+                    GKSHAllowGrabController.Instance.IsGrabAllowed = true;
+                });
+            if (!GKSHAllowGrabController.Instance.IsGrabAllowed)
+            {
+                //_currentPipe.transform.DORotate(new Vector3(0, 360, 0), RingRotatingOnceTime, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(RingRotatingCount, LoopType.Restart);
+                _currentPipe.transform.DOMoveY(PipeRotatingPosition.y, RingRotatingOnceTime * RingRotatingCount);
+                Elevator.DOMoveY(ElevatorRotatingPosition.y, RingRotatingOnceTime * RingRotatingCount);
+            }
         }
         else _isRingRotating = false;
 
