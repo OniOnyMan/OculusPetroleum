@@ -21,7 +21,7 @@ public class ElevatorTriggerHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag("PipeGrabbable") && ElevatorShellGrip.inHand)
-            GameController.Instance.OnElevatorrTriggerEnter(other);
+            GameController.Instance.OnElevatorTriggerEnter(other);
     }
 }
 
