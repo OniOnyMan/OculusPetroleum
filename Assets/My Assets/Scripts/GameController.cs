@@ -55,7 +55,7 @@ public class GameController : MonoBehaviour
     {
         get
         {
-            if (!_currentPipe) return null; 
+            if (!_currentPipe) return null;
             return _currentPipe.gameObject;
         }
     }
@@ -92,9 +92,7 @@ public class GameController : MonoBehaviour
         if (_currentPipe.IsTriggered && _isGKSHCatchAllowed)
         {
             GKSHTriggerHandler.Instance.IsCatchAllowed = false;
-            //_gkshPipe = other.GetComponent<PipeStaticTriggerHandler>();
             _currentPipe.transform.parent = _gkshRing;
-            //_currentPipe = null;
             GKSHAllowGrabController.Instance.IsGrabAllowed = false;
             GKSHAllowGrabController.Instance.GetComponent<Rigidbody>().isKinematic = true;
         }
@@ -106,22 +104,19 @@ public class GameController : MonoBehaviour
         {
             _isRingRotating = true;
             _gkshRing.DORotate(new Vector3(0, 360, 0), RingRotatingOnceTime, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(RingRotatingCount, LoopType.Restart)
-                .OnComplete(() => {
+                .OnComplete(() =>
+                {
                     _currentPipe.transform.parent = ElevatorCatch;
                     GKSHAllowGrabController.Instance.IsGrabAllowed = true;
-                    //GKSHTriggerHandler.Instance.IsCatchAllowed = false;
                     _previousPipe.transform.parent = _currentPipe.transform;
                 });
             if (!GKSHAllowGrabController.Instance.IsGrabAllowed)
             {
-                //_currentPipe.transform.DORotate(new Vector3(0, 360, 0), RingRotatingOnceTime, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(RingRotatingCount, LoopType.Restart);
                 _currentPipe.transform.DOMoveY(PipeRotatingPosition.y, RingRotatingOnceTime * RingRotatingCount);
                 Elevator.DOMoveY(ElevatorRotatingPosition.y, RingRotatingOnceTime * RingRotatingCount).SetEase(Ease.Linear);
             }
         }
         else _isRingRotating = false;
-
-        //StartCoroutine(DelayRingRotatingStop());
     }
 
     private void StopRingRotating()
@@ -130,31 +125,35 @@ public class GameController : MonoBehaviour
             _gkshRing.DOPause();
     }
 
-    public void OnElevatorrTriggerEnter(Collider other)
+    public void OnElevatorTriggerEnter(Collider other)
     {
         var grabbable = other.GetComponent<OVRGrabbable>();
         if (grabbable.isGrabbed)
             grabbable.grabbedBy.ForceRelease(grabbable);
         Destroy(other.transform.parent.gameObject);
         ElevatorTriggerHandler.Instance.ElevatorShellGrip.DropFromHand();
-        
+        SetCurrentPipe();
+    }
+
+    private void SetCurrentPipe()
+    {
         var elevatorShell = ElevatorCatch.parent;
         var elevatorShellRigidbody = elevatorShell.GetComponent<Rigidbody>();
 
         elevatorShellRigidbody.isKinematic = true;
         elevatorShell.position = ElevatorShellJointPosition;
         elevatorShell.rotation = Quaternion.Euler(ElevatorShellJointRotation);
-        _currentPipe = Instantiate(PipeStaticPrefab, PipeShellJointPosition, Quaternion.Euler(PipeShellJointRotation)).GetComponentInChildren<PipeStaticTriggerHandler>();
+        _currentPipe = Instantiate(PipeStaticPrefab, PipeShellJointPosition, Quaternion.Euler(PipeShellJointRotation))
+                        .GetComponentInChildren<PipeStaticTriggerHandler>();
         _currentPipe.name = string.Format("{0} (Cycle: {1})", _currentPipe.name, _cycleCount);
         _currentPipe.transform.parent = ElevatorCatch;
-        //yield return new WaitForSecondsRealtime(0.22f);
         elevatorShellRigidbody.isKinematic = false;
     }
 
     void Start()
     {
         _startElevatorHeight = Elevator.position.y;
-        LiftLeversSwitched += (ElevatorLiftStage cond) =>  _movingDirection = cond;
+        LiftLeversSwitched += (ElevatorLiftStage cond) => _movingDirection = cond;
         _previousPipe = GameObject.FindGameObjectWithTag("PreviousPipe").GetComponent<PipeStaticTriggerHandler>();
         PreviousPipe.transform.parent = null;
         SetGateOpenClose();
@@ -214,7 +213,6 @@ public class GameController : MonoBehaviour
             if (targetCondition)
                 Elevator.Translate(Vector3.down * Time.deltaTime * ElevatorMovingSpeed);
         }
-        //Debug.LogWarningFormat("Current pipe: {0}, Elecator Catch: {1}",_currentPipe.name, ElevatorCatch.name);
         if (!_currentPipe && ElevatorCatch.childCount > 0 && ElevatorCatch.GetChild(0) == _previousPipe.transform)
         {
             _movingDirection = ElevatorLiftStage.Idle;
